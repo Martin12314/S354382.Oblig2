@@ -40,7 +40,38 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public DobbeltLenketListe() {
         hode=hale=null;
         antall=0;
+        endringer=0;
 
+    }
+    private Node<T> finnNode(int indeks) {
+    Node<T> current;
+
+    if (indeks<=antall/2){
+        current=hode;
+        for (int i=0; i<indeks; i++) {
+            current = current.neste;
+        }
+        }else {
+            current= hale;
+            for (int i=antall-1; i>indeks; i--){
+                current=current.forrige;
+            }
+        }
+    return current;
+    }
+    private static void fratilKontroll(int antall, int fra, int til)
+    {
+        if (fra < 0)                                  // fra er negativ
+            throw new IndexOutOfBoundsException
+                    ("fra(" + fra + ") er negativ!");
+
+        if (til > antall)                          // til er utenfor tabellen
+            throw new IndexOutOfBoundsException
+                    ("til(" + til + ") > tablengde(" + antall + ")");
+
+        if (fra > til)                                // fra er større enn til
+            throw new IllegalArgumentException
+                    ("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
     }
 
     public DobbeltLenketListe(T[] a) {
@@ -53,6 +84,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                     hode = hale = new Node<>(a[indeks]);
                     antall++;
                     break;
+
                 }
             }
             if (hode != null) {
@@ -65,6 +97,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                     }
                 }
             }
+
+
         }
     }
 
@@ -89,7 +123,21 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
-        throw new UnsupportedOperationException();
+       Objects.requireNonNull(verdi, "Verdien som legges inn kan ikke være null");
+
+       if (antall==0){
+           hode=hale= new Node<T>(verdi,null,null);
+           antall++;
+           endringer++;
+           return true;
+
+       }else{
+           hale=hale.neste=new Node<T>(verdi,hale,null);
+           antall++;
+           endringer++;
+           return true;
+       }
+
     }
 
     @Override
@@ -104,7 +152,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T hent(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks,false);
+        return finnNode(indeks).verdi;
     }
 
     @Override
@@ -114,7 +163,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks, false);
+        Objects.requireNonNull(nyverdi);
+
+        T forverdi= hent(indeks);
+        finnNode(indeks).verdi=nyverdi;
+        endringer++;
+
+
+
+      return forverdi;
     }
 
     @Override
@@ -134,11 +192,46 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException();
+
+        if (antall==0){
+            return "[]";
+        }
+        StringBuilder s=  new StringBuilder();
+
+        Node<T> p = hode;
+        s.append("[");
+        s.append(p.verdi);
+        p=p.neste;
+
+        while(p!=null){
+            s.append(", ");
+            s.append(p.verdi);
+            p=p.neste;
+
+        }
+        s.append("]");
+        return s.toString();
+
     }
 
     public String omvendtString() {
-        throw new UnsupportedOperationException();
+        if (antall==0){
+            return "[]";
+        }
+        StringBuilder s= new StringBuilder();
+
+        Node<T>p =hale;
+        s.append("[");
+        s.append(p.verdi);
+        p=p.forrige;
+        while (p!=null){
+            s.append(", ");
+            s.append(p.verdi);
+            p=p.forrige;
+        }
+        s.append("]");
+        return s.toString();
+
     }
 
     @Override
