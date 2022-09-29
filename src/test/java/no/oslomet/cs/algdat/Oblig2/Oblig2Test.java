@@ -2,8 +2,6 @@ package no.oslomet.cs.algdat.Oblig2;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class Oblig2Test {
 
     ////// Oppgave 1 /////////////////////
@@ -51,6 +49,7 @@ class Oblig2Test {
         if (liste.antall() != 1) {
             antallFeil++;
             System.out.println("Oppgave 1g: Feil i konstruktøren!");
+            System.out.println(liste.antall());
         }
 
         if (liste.tom() != false) {
@@ -129,7 +128,7 @@ class Oblig2Test {
         }
 
         Integer[] tall = {1, 2, 3, 4, 5};
-        Test<Integer> testliste = new Test(tall);
+        Test<Integer> testliste = new Test<>(tall);
 
         if (testliste.antall() > 5) {
             antallFeil++;
