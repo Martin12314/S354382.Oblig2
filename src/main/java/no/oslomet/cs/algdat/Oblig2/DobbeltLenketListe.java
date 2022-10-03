@@ -18,7 +18,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
      */
     private static final class Node<T> {
         private T verdi;                   // nodens verdi
-        private final Node<T> forrige;
+        private Node<T> forrige;
         private Node<T> neste;    // pekere
 
         private Node(T verdi, Node<T> forrige, Node<T> neste) {
@@ -151,7 +151,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
-        throw new UnsupportedOperationException();
+     indeksKontroll(indeks,false);
+
+     if (antall==0){
+         hale=hode= new Node<>(verdi,null,null);
+     }else if (indeks==0){
+         hode=hode.forrige= new Node<>(verdi,null,hode);
+     }else if(indeks==antall){
+         hale=hale.neste= new Node<>(verdi,hale,null);
+     }else{
+        Node<T>p=finnNode(indeks);
+        p.forrige=p.forrige.neste= new Node<>(verdi, p.forrige,p);
+     }
+
     }
 
     @Override
@@ -175,14 +187,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public int indeksTil(T verdi) {
 
 
-        Node<T> p=hode;
-        for (int i=0; i<antall; i++, p=p.neste){ //Går gjennom listen
-
-            if (p.verdi .equals(verdi)){ //Når for løkken gjør at p stemmer med verdi
-                return i; //Om det stemmer returneres indeksen
-            }
-        }
-        return -1;
+        Node<T>p =hode;
+       for (int indeks=0; indeks<antall; indeks++, p=p.neste){
+           if (p.verdi.equals(verdi)){
+               return indeks;
+           }
+       }
+       return -1;
       }
 
 
@@ -208,7 +219,54 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T fjern(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks, false);  // Se Liste, false: indeks = antall er ulovlig
+
+
+
+        T temp ;                            // hjelpevariabel
+
+        if (indeks == 0)                     // skal første verdi fjernes?
+        {
+            temp = hode.verdi;                 // tar vare på verdien som skal fjernes
+            hode = hode.neste;                 // hode flyttes til neste node
+            hode.forrige=null;
+            if (antall == 1) {
+                hale = null;      // det var kun en verdi i listen
+
+            }
+        }  if (indeks == antall-1) {
+            temp = hale.verdi;
+            hale = hale.forrige;
+            hale.neste=null;
+            if (antall == 1){
+                hale = null;      // det var kun en verdi i listen
+            }
+
+        } else{
+            Node<T> current=hode;
+            for (int i=0; i<indeks; i++) {//Går gjennom listen fra start til indeksF
+                current = current.neste;
+                if (indeks==i) {
+
+                    hode = current.neste;
+                    hode.forrige = null;
+                }
+            }
+
+            temp = current.verdi;
+            System.out.println(current.verdi);
+            current=current.neste;
+            System.out.println(current.verdi);
+            current.forrige=null;
+            System.out.println(current.verdi);
+
+
+        }
+
+
+
+        antall--;                            // reduserer antallet
+        return temp;                         // returner fjernet verdi
     }
 
     @Override
