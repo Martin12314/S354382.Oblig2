@@ -1,2 +1,2 @@
-:Oppgave 5f: Det kastes feil type unntak for null-verdier!
-DOppgave 5g: Feil i indekssjekken! 0 <= indeks <= antall er tillatt!
+:Oppgave 6gb: Feil i antall-oppdateringen i fjern(indeks)!
+>             Reduseres ikke antall? Reduserers den to ganger!

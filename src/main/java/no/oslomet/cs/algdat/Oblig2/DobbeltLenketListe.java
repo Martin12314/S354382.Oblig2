@@ -246,19 +246,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             Node<T> current=hode;
             for (int i=0; i<indeks; i++) {//Går gjennom listen fra start til indeksF
                 current = current.neste;
-                if (indeks==i) {
 
-                    hode = current.neste;
-                    hode.forrige = null;
-                }
             }
 
             temp = current.verdi;
-            System.out.println(current.verdi);
+
             current=current.neste;
-            System.out.println(current.verdi);
+
             current.forrige=null;
-            System.out.println(current.verdi);
+
 
 
         }
