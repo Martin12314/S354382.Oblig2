@@ -693,6 +693,7 @@ class Oblig2Test {
             }
         }
 
+
         try {
             liste.fjern(-1);
             antallFeil++;
@@ -704,10 +705,12 @@ class Oblig2Test {
             }
         }
 
+
         if (!liste.fjern(3).equals("D")) {
             antallFeil++;
             System.out.println("Oppgave 6ga: Feil returverdi i metoden fjern(indeks)!");
         }
+
 
         if (liste.antall() != 6) {
             antallFeil++;
@@ -719,6 +722,7 @@ class Oblig2Test {
         liste.fjern(4);  // fjerner G
 
         if (liste.antall() != 4) { //
+
             antallFeil++;
             System.out.println("Oppgave 6h: Feil i antall-oppdateringen i fjern(indeks)!");
         }
@@ -731,6 +735,7 @@ class Oblig2Test {
 
         if (!liste.omvendtString().equals("[F, E, C, B]")) {
             antallFeil++;
+            System.out.println(liste.omvendtString());
             System.out.println("Oppgave 6j: Feil i fjern(indeks)-metoden!");
         }
 

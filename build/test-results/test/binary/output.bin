@@ -1,16 +1,1 @@
-6Oppgave 6ga: Feil returverdi i metoden fjern(indeks)!
-[C, D, E, F]
-*Oppgave 6i: Feil i fjern(indeks)-metoden!
-*Oppgave 6j: Feil i fjern(indeks)-metoden!
-5Oppgave 6kb: Feil i antall-oppdateringen i fjern(T)!
->             Reduseres ikke antall? Reduserers den to ganger!
-<Oppgave 6kc: Skal fjerne første forekomst hvis flere like!
-0Oppgave 6l: Feil returverdi i metoden fjern(T)!
-%Oppgave 6m: Feil i metoden fjern(T)!
-%Oppgave 6n: Feil i metoden fjern(T)!
-%Oppgave 6o: Feil i metoden fjern(T)!
-%Oppgave 6p: Feil i metoden fjern(T)!
-:Oppgave 6q: Feil i antall-oppdateringen metoden fjern(T)!
-,Oppgave 6t: Stygg feil! Du MÅ bruke equals
-5            og ikke == i sammenligningen i fjern(T)!
 ?Oppgave 6u: Her kastes det et unntak, men det skal ikke skje!!

@@ -228,37 +228,54 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
-        Node<T> p = hode; //Setter en peker til hode
-        while (p != null) { //Så lenge hode ikke er null
-            p=p.neste;
-            if (!p.verdi.equals(verdi)) { //Om verdien ikke stemmer
 
-                return false;
-            }
-        }
-        if (hode == null) {
+        if (verdi==null){
             return false;
-
-        } else if (antall==1){//Om det kun er en verdi
-            hode=hale=null;
-
-        } else if (verdi == hale.verdi) {//Om det er første
-            hale = hale.forrige;
-            hale.neste=null;
-
-        }  else if (verdi == hode.verdi) { //Om det er siste
-            hode = hode.neste;
-            hode.forrige=null;
-
-        } else {//Om den er et sted i mellom
-            p.forrige.neste=p.neste;
-            p.neste.forrige=p.forrige;
-
         }
 
+        Node<T> p=hode;
+
+
+
+
+            for (;p!=null; p=p.neste) {
+                if (p.verdi.equals(verdi)) {
+                    break;
+
+                }
+
+
+                }
+
+                    if (p==null){
+                        return false;
+                    }
+
+                  if (p.verdi.equals(hode.verdi)){
+
+                        hode = hode.neste;
+                        if (hode!=null) {
+                            hode.forrige = null;
+                        }
+
+
+                    }else if (p.verdi.equals(hale.verdi)){
+                        hale=hale.forrige;
+                        hale.neste=null;
+
+
+                    }else {
+                        p.neste.forrige=p.forrige;
+                        p.forrige.neste=p.neste;
+
+
+
+                }
+
+        p.verdi = null;
+        p.forrige = p.neste = null;
         antall--;
         endringer++;
-
         return true;
 
 
@@ -267,47 +284,35 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public T fjern(int indeks) {
         indeksKontroll(indeks, false);  // Se Liste, false: indeks = antall er ulovlig
+        Node<T> temp;
 
-        T temp ;                            // hjelpevariabel
-
-        if (indeks == 0)                     // skal første verdi fjernes?
-        {
-            temp = hode.verdi;                 // tar vare på verdien som skal fjernes
-            hode = hode.neste;                 // hode flyttes til neste node
-            hode.forrige=null;
-            if (antall == 1) {
-                hale = null;      // det var kun en verdi i listen
-
-            }
-        }  if (indeks == antall-1) {
-            temp = hale.verdi;
+        if (indeks == 0) { // Første node
+            temp = hode;
+            hode = hode.neste;
+            hode.forrige = null;
+        } else if (indeks == antall - 1) { // Siste node
+            temp = hale;
             hale = hale.forrige;
-            hale.neste=null;
-            if (antall == 1){
-                hale = null;      // det var kun en verdi i listen
-            }
-
-        } else{
-            Node<T> current=hode;
-            for (int i=0; i<indeks; i++) {//Går gjennom listen fra start til indeksF
-                hode = current.neste;
-                hode.forrige = null;
+            hale.neste = null;
+        } else {
+            Node<T>current = hode;
+            for (int i=1; i<indeks; i++) {
+                current = current.neste;
 
             }
 
-            temp = current.verdi;
-            current=current.neste;
-            current.forrige=null;
+            temp = current.neste;
 
-
-
+            current.neste = current.neste.neste;
+            current.neste.forrige = current;
         }
 
 
-
         antall--;                            // reduserer antallet
-        return temp;                         // returner fjernet verdi
-    }
+        endringer++;
+        return temp.verdi;                         // returner fjernet verdi
+     }
+
 
     @Override
     public void nullstill() {
@@ -318,15 +323,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public String toString() {
 
-        if (antall==0){
+        if (tom()){
             return "[]";
         }
         StringBuilder s=  new StringBuilder();
 
-        Node<T> p = hode;
+
         s.append("[");
-        s.append(p.verdi);
-        p=p.neste;
+        Node<T> p = hode;
+            s.append(p.verdi);
+            p=p.neste;
+
+
 
         while(p!=null){
             s.append(", ");
