@@ -151,18 +151,32 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
-     indeksKontroll(indeks,false);
+        if (indeks>antall)
+            throw new IndexOutOfBoundsException("Indeksen kan ikke være høyere enn antall");
 
-     if (antall==0){
+        if (indeks<0)
+            throw new IndexOutOfBoundsException("indeksen kan ikke være negativ");
+        Objects.requireNonNull(verdi, "Kan ikke være null verdier!");
+
+        if (antall==0){
          hale=hode= new Node<>(verdi,null,null);
+         antall++;
+         endringer++;
      }else if (indeks==0){
          hode=hode.forrige= new Node<>(verdi,null,hode);
+         antall++;
+         endringer++;
      }else if(indeks==antall){
          hale=hale.neste= new Node<>(verdi,hale,null);
+         antall++;
+         endringer++;
      }else{
         Node<T>p=finnNode(indeks);
         p.forrige=p.forrige.neste= new Node<>(verdi, p.forrige,p);
+         antall++;
+         endringer++;
      }
+
 
     }
 
@@ -214,14 +228,45 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException();
+        Node<T> p = hode; //Setter en peker til hode
+        while (p != null) { //Så lenge hode ikke er null
+            p=p.neste;
+            if (!p.verdi.equals(verdi)) { //Om verdien ikke stemmer
+
+                return false;
+            }
+        }
+        if (hode == null) {
+            return false;
+
+        } else if (antall==1){//Om det kun er en verdi
+            hode=hale=null;
+
+        } else if (verdi == hale.verdi) {//Om det er første
+            hale = hale.forrige;
+            hale.neste=null;
+
+        }  else if (verdi == hode.verdi) { //Om det er siste
+            hode = hode.neste;
+            hode.forrige=null;
+
+        } else {//Om den er et sted i mellom
+            p.forrige.neste=p.neste;
+            p.neste.forrige=p.forrige;
+
+        }
+
+        antall--;
+        endringer++;
+
+        return true;
+
+
     }
 
     @Override
     public T fjern(int indeks) {
         indeksKontroll(indeks, false);  // Se Liste, false: indeks = antall er ulovlig
-
-
 
         T temp ;                            // hjelpevariabel
 
@@ -245,14 +290,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         } else{
             Node<T> current=hode;
             for (int i=0; i<indeks; i++) {//Går gjennom listen fra start til indeksF
-                current = current.neste;
+                hode = current.neste;
+                hode.forrige = null;
 
             }
 
             temp = current.verdi;
-
             current=current.neste;
-
             current.forrige=null;
 
 
@@ -267,7 +311,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void nullstill() {
-        throw new UnsupportedOperationException();
+
+
     }
 
     @Override

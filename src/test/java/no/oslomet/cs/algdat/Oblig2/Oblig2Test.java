@@ -951,6 +951,7 @@ class Oblig2Test {
         for (int i = 1; i <= 7; i++) {
             liste.leggInn(i);
         }
+        System.out.println(liste);
 
         liste.nullstill();
 
@@ -959,9 +960,11 @@ class Oblig2Test {
             System.out.println
                     ("Oppgave 7a: Feil i antalloppdateringen i nullstill!");
         }
+        System.out.println(liste);
 
         if (!liste.toString().equals("[]")) {
             antallFeil++;
+
             System.out.println("Oppgave 7b: Feil i metoden nullstill()!");
         }
 
