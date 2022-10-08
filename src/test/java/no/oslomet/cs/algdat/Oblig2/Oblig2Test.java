@@ -722,20 +722,17 @@ class Oblig2Test {
         liste.fjern(4);  // fjerner G
 
         if (liste.antall() != 4) { //
-
             antallFeil++;
             System.out.println("Oppgave 6h: Feil i antall-oppdateringen i fjern(indeks)!");
         }
 
         if (!liste.toString().equals("[B, C, E, F]")) {
             antallFeil++;
-            System.out.println(liste.toString());
             System.out.println("Oppgave 6i: Feil i fjern(indeks)-metoden!");
         }
 
         if (!liste.omvendtString().equals("[F, E, C, B]")) {
             antallFeil++;
-            System.out.println(liste.omvendtString());
             System.out.println("Oppgave 6j: Feil i fjern(indeks)-metoden!");
         }
 
@@ -846,6 +843,7 @@ class Oblig2Test {
                     ("Oppgave 6v: Her må det være en pekerfeil!");
             antallFeil++;
         }
+
 
         if (!liste.omvendtString().equals("[]")) {
             System.out.println

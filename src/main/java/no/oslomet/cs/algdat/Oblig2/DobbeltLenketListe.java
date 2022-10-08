@@ -226,77 +226,81 @@ public class DobbeltLenketListe<T> implements Liste<T> {
       return forverdi;
     }
 
+
     @Override
     public boolean fjern(T verdi) {
+        if (verdi == null) return false;
 
-        if (verdi==null){
-            return false;
-        }
+        for (Node<T> current = hode; current != null; current = current.neste) {
+            if (verdi.equals(current.verdi)) {
+                antall--;
+                endringer++;
 
-        Node<T> p=hode;
-
-
-
-
-            for (;p!=null; p=p.neste) {
-                if (p.verdi.equals(verdi)) {
-                    break;
-
-                }
-
-
-                }
-
-                    if (p==null){
-                        return false;
+                if(current == hode){
+                    if(hode.neste == null){
+                        hode = null;
+                        hale = null;
                     }
-
-                  if (p.verdi.equals(hode.verdi)){
-
+                    else {
                         hode = hode.neste;
-                        if (hode!=null) {
-                            hode.forrige = null;
-                        }
-
-
-                    }else if (p.verdi.equals(hale.verdi)){
-                        hale=hale.forrige;
-                        hale.neste=null;
-
-
-                    }else {
-                        p.neste.forrige=p.forrige;
-                        p.forrige.neste=p.neste;
-
-
-
+                        hode.forrige = null;
+                    }
+                }
+                else if(current == hale) {
+                    if (hale.forrige == null) {
+                        hale = null;
+                        hode = null;
+                    } else {
+                        hale = hale.forrige;
+                        hale.neste = null;
+                    }
+                }
+                else {
+                    current.forrige.neste = current.neste;
+                    current.neste.forrige = current.forrige;
                 }
 
-        p.verdi = null;
-        p.forrige = p.neste = null;
-        antall--;
-        endringer++;
-        return true;
+                return true;
+            }
+
+
+        }
+        return false;
 
 
     }
 
     @Override
     public T fjern(int indeks) {
-        indeksKontroll(indeks, false);  // Se Liste, false: indeks = antall er ulovlig
-        Node<T> temp;
+        indeksKontroll(indeks,false);  // Se Liste, false: indeks = antall er ulovlig
+        Node<T> temp=hode;
 
         if (indeks == 0) { // Første node
-            temp = hode;
-            hode = hode.neste;
-            hode.forrige = null;
+            if(hode.neste == null){
+                temp = hode;
+                hode = null;
+                hale = null;
+            }else {
+               temp=hode;
+                hode = hode.neste;
+                hode.forrige = null;
+
+            }
         } else if (indeks == antall - 1) { // Siste node
-            temp = hale;
-            hale = hale.forrige;
-            hale.neste = null;
+            if(hale.forrige==null){
+                temp=hale;
+                hode=null;
+                hale=null;
+
+            }else{
+                temp = hale;
+                hale = hale.forrige;
+                hale.neste = null;
+            }
+
         } else {
             Node<T>current = hode;
-            for (int i=1; i<indeks; i++) {
+            for (int i=0; i<indeks-1; i++) {
                 current = current.neste;
 
             }
@@ -331,10 +335,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         s.append("[");
         Node<T> p = hode;
+        if (p!=null) {
             s.append(p.verdi);
-            p=p.neste;
-
-
+            p = p.neste;
+        }
 
         while(p!=null){
             s.append(", ");
@@ -351,20 +355,20 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         if (antall==0){
             return "[]";
         }
-        StringBuilder s= new StringBuilder();
 
-        Node<T>p =hale;
-        s.append("[");
+        StringBuilder s = new StringBuilder();
+
+        Node<T>p=hale;
+        s.append('[');
         s.append(p.verdi);
         p=p.forrige;
-        while (p!=null){
+        while(p!=null){
             s.append(", ");
             s.append(p.verdi);
             p=p.forrige;
         }
-        s.append("]");
+        s.append(']');
         return s.toString();
-
     }
 
     @Override
@@ -403,8 +407,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public void remove() {
+
             throw new UnsupportedOperationException();
-        }
+            }
+
 
     } // class DobbeltLenketListeIterator
 
