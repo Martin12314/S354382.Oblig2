@@ -134,18 +134,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public boolean leggInn(T verdi) {
        Objects.requireNonNull(verdi, "Verdien som legges inn kan ikke være null");
 
-       if (antall==0){
+       if (antall==0)
            hode=hale= new Node<>(verdi,null,null);
-           antall++;
-           endringer++;
-           return true;
-
-       }else{
+    else
            hale=hale.neste=new Node<>(verdi,hale,null);
            antall++;
            endringer++;
            return true;
-       }
+
 
     }
 
@@ -317,9 +313,38 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         return temp.verdi;                         // returner fjernet verdi
      }
 
-
+//Lagde en metode som tok tiden for metoden in test filen min og valgte å bruke en liste med et gitt antall tall
+//Metode 1 brukte mellom 8 og 10 millisekunder på å nulstille listen som hadde en million tall.
+//Metode 2 brukte mellom 10 og 15 millisekunder på å nullstille en liste som hadde en million tall
+//Velger dermed metode 1 for denne var raskest
     @Override
     public void nullstill() {
+
+    Node<T> current=hode;
+        Node<T> temp;
+
+        while (current!=null){
+            temp=current.neste;
+            current.neste=null;
+            current.forrige=null;
+            current.verdi=null;
+            current=temp;
+        }
+        antall = 0;
+        endringer++;
+
+
+
+
+        /*  for (int i=0; i<antall; i++){
+            fjern(0);
+
+        }
+        antall=0;
+       endringer++;
+
+         */
+
 
 
     }
