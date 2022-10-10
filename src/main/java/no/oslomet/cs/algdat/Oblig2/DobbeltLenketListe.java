@@ -407,7 +407,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private class DobbeltLenketListeIterator implements Iterator<T> {
         private  Node<T> denne;
         private  boolean fjernOK;
-        private int iteratorendringer;
+        private  int iteratorendringer;
 
         private DobbeltLenketListeIterator() {
             denne = hode;     // p starter på den første i listen
@@ -420,9 +420,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             fjernOK = false;  // blir sann når next() kalles
             iteratorendringer = endringer;  // teller endringer
 
-            for (int i=0; i<=indeks; i++){
-                next();
+            for (; denne!=null; denne=denne.neste ){
+
+
+
             }
+
+
+
+
 
 
         }
