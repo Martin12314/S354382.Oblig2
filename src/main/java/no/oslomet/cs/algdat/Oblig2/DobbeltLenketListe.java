@@ -4,9 +4,7 @@ package no.oslomet.cs.algdat.Oblig2;
 ////////////////// class DobbeltLenketListe //////////////////////////////
 
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 
 public class DobbeltLenketListe<T> implements Liste<T> {
@@ -398,17 +396,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+        return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks, false);
+        return new DobbeltLenketListeIterator(indeks);
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
-        private final Node<T> denne;
-        private final boolean fjernOK;
-        private final int iteratorendringer;
+        private  Node<T> denne;
+        private  boolean fjernOK;
+        private int iteratorendringer;
 
         private DobbeltLenketListeIterator() {
             denne = hode;     // p starter på den første i listen
@@ -417,7 +416,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         private DobbeltLenketListeIterator(int indeks) {
-            throw new UnsupportedOperationException();
+            denne = hode;     // p starter på den første i listen
+            fjernOK = false;  // blir sann når next() kalles
+            iteratorendringer = endringer;  // teller endringer
+
+            for (int i=0; i<=indeks; i++){
+                next();
+            }
+
+
         }
 
         @Override
@@ -427,7 +434,21 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next() {
-            throw new UnsupportedOperationException();
+
+            if(iteratorendringer!=endringer) {
+                throw new ConcurrentModificationException();
+            }
+
+            if (hasNext()==false) {
+                throw new NoSuchElementException();
+            }
+            fjernOK=true;
+            T verdi=denne.verdi;
+            denne=denne.neste;
+            return verdi;
+
+
+
         }
 
         @Override
